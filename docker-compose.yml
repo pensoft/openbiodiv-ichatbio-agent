@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  openbiodiv-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openbiodiv-ichatbio-agent
+    ports:
+      - "${PORT:-9999}:9999"
+    environment:
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-9999}
+      - OPENBIODIV_API_URL=${OPENBIODIV_API_URL:-https://api.openbiodiv.net}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:9999/.well-known/agent.json', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - openbiodiv-network
+
+networks:
+  openbiodiv-network:
+    driver: bridge
