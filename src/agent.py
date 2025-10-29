@@ -7,7 +7,7 @@ from ichatbio.agent import IChatBioAgent
 from ichatbio.agent_response import ResponseContext, IChatBioAgentProcess
 from ichatbio.types import AgentCard
 from .agent_card import (
-    AGENT_CARD,
+    build_agent_card,
     GeneralSearchParams,
     TaxonSearchParams,
     ArticleSearchParams,
@@ -17,10 +17,9 @@ from .agent_card import (
     InstitutionSearchParams,
     SequenceSearchParams,
     SectionSearchParams,
-    UUIDParams,
-    EmptyParams
+    UUIDParams
 )
-from .openbiodiv_client import OpenBiodivClient
+from .client import OpenBiodivClient
 import json
 import logging
 
@@ -30,13 +29,27 @@ logger = logging.getLogger(__name__)
 class OpenBiodivAgent(IChatBioAgent):
     """iChatBio agent for querying OpenBiodiv biodiversity knowledge graph via REST API"""
 
-    def __init__(self, api_base_url: str = "https://api.openbiodiv.net"):
-        self.client = OpenBiodivClient(api_base_url=api_base_url)
+    def __init__(
+        self,
+        api_base_url: str = "https://api.openbiodiv.net",
+        agent_url: str = "http://localhost:9999",
+        icon_url: str = "https://openbiodiv.net/favicon.ico",
+        api_timeout: int = 30,
+        archive_timeout: int = 60
+    ):
+        self.agent_url = agent_url
+        self.icon_url = icon_url
+        self.client = OpenBiodivClient(
+            api_base_url=api_base_url,
+            api_timeout=api_timeout,
+            archive_timeout=archive_timeout
+        )
         logger.info(f"OpenBiodiv Agent initialized with API: {api_base_url}")
+        logger.info(f"Agent URL: {agent_url}")
 
     @override
     def get_agent_card(self) -> AgentCard:
-        return AGENT_CARD
+        return build_agent_card(url=self.agent_url, icon=self.icon_url)
 
     @override
     async def run(
@@ -47,7 +60,7 @@ class OpenBiodivAgent(IChatBioAgent):
         params: (GeneralSearchParams | TaxonSearchParams | ArticleSearchParams |
                 TreatmentSearchParams | SpecimenSearchParams | AuthorSearchParams |
                 InstitutionSearchParams | SequenceSearchParams | SectionSearchParams |
-                UUIDParams | EmptyParams)
+                UUIDParams)
     ):
         """Main execution method for handling different entrypoints"""
 
@@ -103,9 +116,6 @@ class OpenBiodivAgent(IChatBioAgent):
 
                 elif entrypoint == "get_by_uuid":
                     await self._handle_get_by_uuid(process, context, params)
-
-                elif entrypoint == "get_statistics":
-                    await self._handle_get_statistics(process, context, params)
 
                 else:
                     raise ValueError(f"Unknown entrypoint: {entrypoint}")
@@ -569,29 +579,3 @@ class OpenBiodivAgent(IChatBioAgent):
 
         resource_type = results.get("type", "unknown")
         await context.reply(f"Retrieved {resource_type} resource information for UUID {params.uuid}.")
-
-    # Statistics Handler
-    async def _handle_get_statistics(
-        self,
-        process: IChatBioAgentProcess,
-        context: ResponseContext,
-        params: EmptyParams
-    ):
-        """Handle get statistics request"""
-        await process.log("Fetching OpenBiodiv database statistics")
-
-        results = self.client.get_statistics()
-
-        if "error" in results:
-            await process.log(f"Fetch failed: {results['error']}")
-            await context.reply(f"Failed to retrieve statistics: {results['error']}")
-            return
-
-        await process.create_artifact(
-            mimetype="application/json",
-            description="OpenBiodiv database statistics",
-            content=json.dumps(results, indent=2).encode('utf-8')
-        )
-
-        summary = "Retrieved OpenBiodiv database statistics including counts for all resource types (articles, treatments, taxons, institutions, authors, sequences, specimens)."
-        await context.reply(summary)

@@ -12,8 +12,15 @@ logger = logging.getLogger(__name__)
 class OpenBiodivClient:
     """Client for interacting with OpenBiodiv REST API endpoints"""
 
-    def __init__(self, api_base_url: str = "https://api.openbiodiv.net"):
+    def __init__(
+        self,
+        api_base_url: str = "https://api.openbiodiv.net",
+        api_timeout: int = 30,
+        archive_timeout: int = 60
+    ):
         self.api_base_url = api_base_url
+        self.api_timeout = api_timeout
+        self.archive_timeout = archive_timeout
         self.session = requests.Session()
 
     def _make_request(self, endpoint: str, params: Optional[Dict] = None) -> Dict:
@@ -32,7 +39,7 @@ class OpenBiodivClient:
         """
         url = f"{self.api_base_url}{endpoint}"
         try:
-            response = self.session.get(url, params=params, timeout=30)
+            response = self.session.get(url, params=params, timeout=self.api_timeout)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -248,7 +255,7 @@ class OpenBiodivClient:
         endpoint = f"/sequences/archive/{hash}" if hash else "/sequences/archive"
         url = f"{self.api_base_url}{endpoint}"
         try:
-            response = self.session.get(url, timeout=60)
+            response = self.session.get(url, timeout=self.archive_timeout)
             response.raise_for_status()
             return response.content
         except requests.exceptions.RequestException as e:
@@ -292,14 +299,3 @@ class OpenBiodivClient:
             Resource information with id, uri, type, and resources array
         """
         return self._make_request(f"/uuids/{uuid}")
-
-    # Statistics
-    def get_statistics(self) -> Dict:
-        """
-        Get database statistics
-
-        Returns:
-            Statistics with processed counts for articles, treatments, taxons,
-            institutions, authors, sequences, specimens
-        """
-        return self._make_request("/statistics")

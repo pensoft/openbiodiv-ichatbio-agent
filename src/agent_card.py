@@ -62,20 +62,26 @@ class UUIDParams(BaseModel):
     uuid: str = Field(description="Resource UUID identifier")
 
 
-class EmptyParams(BaseModel):
-    """Empty parameters for endpoints that don't require input"""
-    pass
+# Agent Card Builder
+def build_agent_card(url: str, icon: str) -> AgentCard:
+    """
+    Build the agent card with dynamic URL and icon
 
+    Args:
+        url: The public URL where the agent is accessible
+        icon: The URL to the agent's icon image
 
-# Agent Card Definition
-AGENT_CARD = AgentCard(
-    name="OpenBiodiv Agent",
-    description="An agent for querying biodiversity knowledge from the OpenBiodiv database, "
-                "including taxonomic names, treatments, specimens, sequences, scientific articles, "
-                "authors, institutions, and sections. Access comprehensive biodiversity data via REST API.",
-    icon="https://openbiodiv.net/images/8b779dcf6b6266b4aadc..png",
-    url="http://localhost:9999",
-    entrypoints=[
+    Returns:
+        AgentCard with configured URL and icon
+    """
+    return AgentCard(
+        name="OpenBiodiv Agent",
+        description="An agent for querying biodiversity knowledge from the OpenBiodiv database, "
+                    "including taxonomic names, treatments, specimens, sequences, scientific articles, "
+                    "authors, institutions, and sections. Access comprehensive biodiversity data via REST API.",
+        icon=icon,
+        url=url,
+        entrypoints=[
         # General Search
         AgentEntrypoint(
             id="search",
@@ -176,11 +182,5 @@ AGENT_CARD = AgentCard(
             description="Get resource information by UUID (works for any resource type)",
             parameters=UUIDParams
         ),
-        # Statistics
-        AgentEntrypoint(
-            id="get_statistics",
-            description="Get OpenBiodiv database statistics including counts of all resource types",
-            parameters=EmptyParams
-        ),
-    ]
-)
+        ]
+    )

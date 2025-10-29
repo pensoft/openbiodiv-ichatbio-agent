@@ -35,11 +35,11 @@ cd openbiodiv-ichatbio-agent
 # Install dependencies
 uv sync
 
-# Run the agent (option 1: direct execution)
-uv run python -m src.main
+# Run the agent (recommended)
+uv run python -m src
 
-# Run the agent (option 2: uvicorn with factory pattern)
-uv run uvicorn src.main:create_app --factory --host 0.0.0.0 --port 9999
+# Alternative: uvicorn with factory pattern (for development with hot reload)
+uv run uvicorn src.main:create_app --factory --reload --host 0.0.0.0 --port 9999
 ```
 
 ### Run with Docker
@@ -103,14 +103,14 @@ Available environment variables:
 ### Local Development
 
 ```bash
-# Run the agent (direct execution)
-uv run python -m src.main
+# Run the agent (recommended)
+uv run python -m src
 
-# Or with uvicorn (factory pattern - recommended for development)
+# Alternative: uvicorn with factory pattern (for development with hot reload)
 uv run uvicorn src.main:create_app --factory --reload --host 0.0.0.0 --port 9999
 
 # With custom configuration
-HOST=127.0.0.1 PORT=8080 uv run python -m src.main
+HOST=127.0.0.1 PORT=8080 uv run python -m src
 ```
 
 ### Docker Compose
@@ -214,14 +214,16 @@ uv run pytest tests/test_openbiodiv_client.py
 .
 ├── src/
 │   ├── __init__.py
-│   ├── main.py                 # Server entry point
+│   ├── __main__.py             # Package entry point (python -m src)
+│   ├── main.py                 # Server factory (uvicorn/Docker)
 │   ├── agent_card.py           # Agent capabilities definition
-│   ├── openbiodiv_agent.py     # Agent implementation
-│   └── openbiodiv_client.py    # OpenBiodiv API client
+│   ├── agent.py                # Agent implementation
+│   └── client.py               # OpenBiodiv API client
 ├── tests/
 │   ├── conftest.py             # Test fixtures
 │   ├── test_agent_card.py
-│   └── test_openbiodiv_client.py
+│   ├── test_agent.py
+│   └── test_client.py
 ├── docker-compose.yml
 ├── Dockerfile
 ├── pyproject.toml
