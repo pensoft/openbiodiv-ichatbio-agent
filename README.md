@@ -39,7 +39,7 @@ uv sync
 uv run python -m src
 
 # Alternative: uvicorn with factory pattern (for development with hot reload)
-uv run uvicorn src.main:create_app --factory --reload --host 0.0.0.0 --port 9999
+uv run uvicorn src.app:create_app --factory --reload --host 0.0.0.0 --port 9999
 ```
 
 ### Run with Docker
@@ -107,7 +107,7 @@ Available environment variables:
 uv run python -m src
 
 # Alternative: uvicorn with factory pattern (for development with hot reload)
-uv run uvicorn src.main:create_app --factory --reload --host 0.0.0.0 --port 9999
+uv run uvicorn src.app:create_app --factory --reload --host 0.0.0.0 --port 9999
 
 # With custom configuration
 HOST=127.0.0.1 PORT=8080 uv run python -m src
@@ -145,7 +145,6 @@ The agent provides 19 entrypoints organized by resource type:
 ### General
 
 - `search` - Search across all resource types
-- `get_statistics` - Database statistics and counts
 
 ### Taxons
 
@@ -215,7 +214,7 @@ uv run pytest tests/test_openbiodiv_client.py
 ├── src/
 │   ├── __init__.py
 │   ├── __main__.py             # Package entry point (python -m src)
-│   ├── main.py                 # Server factory (uvicorn/Docker)
+│   ├── app.py                  # Application factory (create_app)
 │   ├── agent_card.py           # Agent capabilities definition
 │   ├── agent.py                # Agent implementation
 │   └── client.py               # OpenBiodiv API client

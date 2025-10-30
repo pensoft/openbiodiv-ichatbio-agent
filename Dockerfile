@@ -47,5 +47,5 @@ ENV PYTHONUNBUFFERED=1
 ENV HOST=0.0.0.0
 ENV PORT=9999
 
-# Run the application using uvicorn with factory pattern
-CMD ["uvicorn", "src.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "9999"]
+# Run the application using python -m
+CMD ["python", "-m", "src"]

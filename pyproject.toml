@@ -21,7 +21,7 @@ dev = [
 ]
 
 [project.scripts]
-openbiodiv-agent = "src.main:create_app"
+openbiodiv-agent = "src.__main__:main"
 
 [build-system]
 requires = ["setuptools>=68.0"]

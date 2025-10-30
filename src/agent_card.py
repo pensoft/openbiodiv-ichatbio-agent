@@ -124,7 +124,7 @@ def build_agent_card(url: str, icon: str) -> AgentCard:
         # Specimens
         AgentEntrypoint(
             id="search_specimens",
-            description="Search for specimen records with collection data",
+            description="Get details about available resources and fetch sparql links about specific templates",
             parameters=SpecimenSearchParams
         ),
         AgentEntrypoint(

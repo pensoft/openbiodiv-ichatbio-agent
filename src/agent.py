@@ -1,11 +1,15 @@
 """
 OpenBiodiv Agent for the iChatBio framework
+
+Handles the business logic for the OpenBiodiv Agent.
 """
 
 from typing import override
 from ichatbio.agent import IChatBioAgent
 from ichatbio.agent_response import ResponseContext, IChatBioAgentProcess
+from ichatbio.server import build_agent_app
 from ichatbio.types import AgentCard
+from starlette.applications import Starlette
 from .agent_card import (
     build_agent_card,
     GeneralSearchParams,
@@ -23,6 +27,7 @@ from .client import OpenBiodivClient
 import json
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -31,11 +36,11 @@ class OpenBiodivAgent(IChatBioAgent):
 
     def __init__(
         self,
-        api_base_url: str = "https://api.openbiodiv.net",
-        agent_url: str = "http://localhost:9999",
-        icon_url: str = "https://openbiodiv.net/favicon.ico",
-        api_timeout: int = 30,
-        archive_timeout: int = 60
+        api_base_url: str,
+        agent_url: str,
+        icon_url: str,
+        api_timeout: int,
+        archive_timeout: int
     ):
         self.agent_url = agent_url
         self.icon_url = icon_url
@@ -579,3 +584,48 @@ class OpenBiodivAgent(IChatBioAgent):
 
         resource_type = results.get("type", "unknown")
         await context.reply(f"Retrieved {resource_type} resource information for UUID {params.uuid}.")
+
+
+
+def create_app(
+    api_base_url: str,
+    agent_url: str,
+    agent_icon_url: str,
+    api_timeout: int,
+    archive_timeout: int,
+) -> Starlette:
+    """
+    Factory function to create the OpenBiodiv Agent application.
+
+    This follows the application factory pattern common in Flask, FastAPI,
+    and Starlette applications, separating app configuration from business logic.
+
+    Args:
+        api_base_url: OpenBiodiv API base URL
+        agent_url: Public URL where this agent is accessible
+        agent_icon_url: URL to agent icon image
+        api_timeout: Timeout for API requests in seconds
+        archive_timeout: Timeout for archive downloads in seconds
+
+    Returns:
+        Starlette application instance configured with the OpenBiodiv agent
+    """
+    logger.info("Creating OpenBiodiv Agent application")
+    logger.info(f"API Base URL: {api_base_url}")
+    logger.info(f"Agent URL: {agent_url}")
+
+    # Initialize the agent with configuration
+    agent = OpenBiodivAgent(
+        api_base_url=api_base_url,
+        agent_url=agent_url,
+        icon_url=agent_icon_url,
+        api_timeout=api_timeout,
+        archive_timeout=archive_timeout
+    )
+
+# Build and return the Starlette application
+    app = build_agent_app(agent)
+
+    logger.info("OpenBiodiv Agent application created successfully")
+
+    return app
