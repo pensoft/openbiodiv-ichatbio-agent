@@ -179,7 +179,7 @@ def build_agent_card(url: str, icon: str) -> AgentCard:
         # Generic UUID lookup
         AgentEntrypoint(
             id="get_by_uuid",
-            description="Get resource information by UUID (works for any resource type)",
+            description="Get details about available resources and fetch sparql links about specific templates",
             parameters=UUIDParams
         ),
         ]
