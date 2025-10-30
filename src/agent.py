@@ -39,15 +39,13 @@ class OpenBiodivAgent(IChatBioAgent):
         api_base_url: str,
         agent_url: str,
         icon_url: str,
-        api_timeout: int,
-        archive_timeout: int
+        api_timeout: int
     ):
         self.agent_url = agent_url
         self.icon_url = icon_url
         self.client = OpenBiodivClient(
             api_base_url=api_base_url,
-            api_timeout=api_timeout,
-            archive_timeout=archive_timeout
+            api_timeout=api_timeout
         )
         logger.info(f"OpenBiodiv Agent initialized with API: {api_base_url}")
         logger.info(f"Agent URL: {agent_url}")
@@ -591,8 +589,7 @@ def create_app(
     api_base_url: str,
     agent_url: str,
     agent_icon_url: str,
-    api_timeout: int,
-    archive_timeout: int,
+    api_timeout: int
 ) -> Starlette:
     """
     Factory function to create the OpenBiodiv Agent application.
@@ -605,7 +602,6 @@ def create_app(
         agent_url: Public URL where this agent is accessible
         agent_icon_url: URL to agent icon image
         api_timeout: Timeout for API requests in seconds
-        archive_timeout: Timeout for archive downloads in seconds
 
     Returns:
         Starlette application instance configured with the OpenBiodiv agent
@@ -619,8 +615,7 @@ def create_app(
         api_base_url=api_base_url,
         agent_url=agent_url,
         icon_url=agent_icon_url,
-        api_timeout=api_timeout,
-        archive_timeout=archive_timeout
+        api_timeout=api_timeout
     )
 
 # Build and return the Starlette application

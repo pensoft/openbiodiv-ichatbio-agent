@@ -20,7 +20,6 @@ AGENT_URL = os.getenv("AGENT_URL", "http://localhost:9999")
 AGENT_ICON_URL = os.getenv("AGENT_ICON_URL", "https://openbiodiv.net/favicon.ico")
 OPENBIODIV_API_URL = os.getenv("OPENBIODIV_API_URL", "https://api.openbiodiv.net")
 API_TIMEOUT = int(os.getenv("API_TIMEOUT", "30"))
-ARCHIVE_TIMEOUT = int(os.getenv("ARCHIVE_TIMEOUT", "60"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 # Configure logging
@@ -47,7 +46,6 @@ if __name__ == "__main__":
         api_base_url=OPENBIODIV_API_URL,
         agent_url=AGENT_URL,
         agent_icon_url=AGENT_ICON_URL,
-        api_timeout=API_TIMEOUT,
-        archive_timeout=ARCHIVE_TIMEOUT
+        api_timeout=API_TIMEOUT
     )
     uvicorn.run(app, host=HOST, port=PORT)

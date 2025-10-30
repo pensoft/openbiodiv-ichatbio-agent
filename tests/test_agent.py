@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from src.openbiodiv_agent import OpenBiodivAgent
+from src.agent import OpenBiodivAgent
 from src.agent_card import (
     TaxonSearchParams,
     GeneralSearchParams,
@@ -14,7 +14,12 @@ class TestOpenBiodivAgent:
     @pytest.fixture
     def agent(self):
         """Create an OpenBiodivAgent instance"""
-        return OpenBiodivAgent()
+        return OpenBiodivAgent(
+            api_base_url="https://api.openbiodiv.net",
+            agent_url="http://localhost:9999",
+            icon_url="https://openbiodiv.net/favicon.ico",
+            api_timeout=30
+        )
 
     def test_agent_card(self, agent):
         """Test that agent card contains correct metadata and all entrypoints"""
@@ -22,14 +27,14 @@ class TestOpenBiodivAgent:
 
         assert card.name == "OpenBiodiv Agent"
         assert "biodiversity knowledge" in card.description.lower()
-        assert len(card.entrypoints) == 19
+        assert len(card.entrypoints) == 18
 
         # Verify key entrypoints exist
         entrypoint_ids = [ep.id for ep in card.entrypoints]
         assert "search" in entrypoint_ids
         assert "search_taxons" in entrypoint_ids
         assert "get_article" in entrypoint_ids
-        assert "get_statistics" in entrypoint_ids
+        assert "get_by_uuid" in entrypoint_ids
 
     @pytest.mark.asyncio
     async def test_search_taxons(self, agent, context, messages):
@@ -128,32 +133,7 @@ class TestOpenBiodivAgent:
         reply = messages[-1].text
         assert "search" in reply.lower() or "result" in reply.lower()
 
-    @pytest.mark.asyncio
-    async def test_get_statistics(self, agent, context, messages):
-        """Test statistics retrieval with mocked API response"""
-
-        # Mock the client's get_statistics method
-        mock_response = {
-            "statistics": {
-                "total_taxons": 150000,
-                "total_articles": 25000,
-                "total_treatments": 180000,
-                "total_specimens": 500000
-            }
-        }
-
-        with patch.object(agent.client, 'get_statistics', return_value=mock_response):
-            await agent.run(
-                context=context,
-                request="Get database statistics",
-                entrypoint="get_statistics",
-                params=None
-            )
-
-        # Verify agent sent a reply with statistics
-        assert len(messages) > 0
-        reply = messages[-1].text
-        assert "statistic" in reply.lower() or "count" in reply.lower()
+    # Note: test_get_statistics removed as the statistics entrypoint doesn't exist in the current implementation
 
     @pytest.mark.asyncio
     async def test_error_handling(self, agent, context, messages):

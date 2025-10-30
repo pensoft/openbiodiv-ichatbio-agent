@@ -14,13 +14,11 @@ class OpenBiodivClient:
 
     def __init__(
         self,
-        api_base_url: str = "https://api.openbiodiv.net",
-        api_timeout: int = 30,
-        archive_timeout: int = 60
+        api_base_url: str,
+        api_timeout: int
     ):
         self.api_base_url = api_base_url
         self.api_timeout = api_timeout
-        self.archive_timeout = archive_timeout
         self.session = requests.Session()
 
     def _make_request(self, endpoint: str, params: Optional[Dict] = None) -> Dict:
@@ -241,26 +239,6 @@ class OpenBiodivClient:
             Detailed sequence information
         """
         return self._make_request(f"/sequences/{uuid}")
-
-    def get_sequences_archive(self, hash: Optional[str] = None) -> bytes:
-        """
-        Get sequences archive as TSV file
-
-        Args:
-            hash: Optional MD5 hash (format: Year & Week)
-
-        Returns:
-            TSV file content as bytes
-        """
-        endpoint = f"/sequences/archive/{hash}" if hash else "/sequences/archive"
-        url = f"{self.api_base_url}{endpoint}"
-        try:
-            response = self.session.get(url, timeout=self.archive_timeout)
-            response.raise_for_status()
-            return response.content
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Failed to fetch sequences archive: {e}")
-            return b""
 
     # Sections
     def search_sections(self, query: str) -> Dict:
