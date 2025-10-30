@@ -37,9 +37,6 @@ uv sync
 
 # Run the agent (recommended)
 uv run python -m src
-
-# Alternative: uvicorn with factory pattern (for development with hot reload)
-uv run uvicorn src.app:create_app --factory --reload --host 0.0.0.0 --port 9999
 ```
 
 ### Run with Docker
@@ -89,25 +86,13 @@ Create a `.env` file based on `.env.example`:
 cp .env.example .env
 ```
 
-Available environment variables:
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `HOST` | `0.0.0.0` | Server bind address |
-| `PORT` | `9999` | Server port |
-| `OPENBIODIV_API_URL` | `https://api.openbiodiv.net` | OpenBiodiv API endpoint |
-| `LOG_LEVEL` | `INFO` | Logging level (DEBUG, INFO, WARNING, ERROR) |
-
 ## Usage
 
 ### Local Development
 
 ```bash
-# Run the agent (recommended)
+# Run the agen
 uv run python -m src
-
-# Alternative: uvicorn with factory pattern (for development with hot reload)
-uv run uvicorn src.app:create_app --factory --reload --host 0.0.0.0 --port 9999
 
 # With custom configuration
 HOST=127.0.0.1 PORT=8080 uv run python -m src
@@ -214,15 +199,12 @@ uv run pytest tests/test_openbiodiv_client.py
 ├── src/
 │   ├── __init__.py
 │   ├── __main__.py             # Package entry point (python -m src)
-│   ├── app.py                  # Application factory (create_app)
 │   ├── agent_card.py           # Agent capabilities definition
 │   ├── agent.py                # Agent implementation
 │   └── client.py               # OpenBiodiv API client
 ├── tests/
 │   ├── conftest.py             # Test fixtures
-│   ├── test_agent_card.py
-│   ├── test_agent.py
-│   └── test_client.py
+│   └── test_agent.py
 ├── docker-compose.yml
 ├── Dockerfile
 ├── pyproject.toml

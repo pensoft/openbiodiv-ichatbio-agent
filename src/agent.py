@@ -47,8 +47,6 @@ class OpenBiodivAgent(IChatBioAgent):
             api_base_url=api_base_url,
             api_timeout=api_timeout
         )
-        logger.info(f"OpenBiodiv Agent initialized with API: {api_base_url}")
-        logger.info(f"Agent URL: {agent_url}")
 
     @override
     def get_agent_card(self) -> AgentCard:
@@ -606,9 +604,6 @@ def create_app(
     Returns:
         Starlette application instance configured with the OpenBiodiv agent
     """
-    logger.info("Creating OpenBiodiv Agent application")
-    logger.info(f"API Base URL: {api_base_url}")
-    logger.info(f"Agent URL: {agent_url}")
 
     # Initialize the agent with configuration
     agent = OpenBiodivAgent(
