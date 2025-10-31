@@ -13,14 +13,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Configuration with defaults
-HOST = os.getenv("HOST")
-PORT = int(os.getenv("PORT"))
-AGENT_URL = os.getenv("AGENT_URL")
-AGENT_ICON_URL = os.getenv("AGENT_ICON_URL")
-OPENBIODIV_API_URL = os.getenv("OPENBIODIV_API_URL")
-API_TIMEOUT = int(os.getenv("API_TIMEOUT"))
-LOG_LEVEL = os.getenv("LOG_LEVEL")
+# Configuration with defaults from .env.example
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = int(os.getenv("PORT", "9999"))
+AGENT_URL = os.getenv("AGENT_URL", "http://localhost:9999")
+AGENT_ICON_URL = os.getenv("AGENT_ICON_URL", "https://openbiodiv.net/favicon.ico")
+OPENBIODIV_API_URL = os.getenv("OPENBIODIV_API_URL", "https://api.openbiodiv.net")
+API_TIMEOUT = int(os.getenv("API_TIMEOUT", "30"))
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 # Configure logging
 logging.basicConfig(
