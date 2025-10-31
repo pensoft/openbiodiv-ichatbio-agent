@@ -48,8 +48,10 @@ docker-compose up --build
 # Or build and run manually
 docker build -t openbiodiv-agent .
 docker run -p 9999:9999 \
-  -e AGENT_URL=http://localhost:9999\
+  -e AGENT_URL=http://localhost:9999 \
   -e AGENT_ICON_URL=https://openbiodiv.net/favicon.ico \
+  -e OPENBIODIV_API_URL=https://api.openbiodiv.net \
+  -e API_TIMEOUT=30 \
   -e LOG_LEVEL=DEBUG \
   openbiodiv-agent
 ```

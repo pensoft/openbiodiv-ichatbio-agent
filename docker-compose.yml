@@ -11,7 +11,10 @@ services:
     environment:
       - HOST=${HOST:-0.0.0.0}
       - PORT=${PORT:-9999}
+      - AGENT_URL=${AGENT_URL:-http://localhost:9999}
+      - AGENT_ICON_URL=${AGENT_ICON_URL:-https://openbiodiv.net/favicon.ico}
       - OPENBIODIV_API_URL=${OPENBIODIV_API_URL:-https://api.openbiodiv.net}
+      - API_TIMEOUT=${API_TIMEOUT:-30}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
     restart: unless-stopped
     healthcheck:
