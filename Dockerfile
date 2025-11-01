@@ -4,10 +4,10 @@ FROM python:3.12-slim AS builder
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+
+# Disable pip rich progress bars to avoid threading issues
+ENV PIP_NO_RICH=1
+ENV PIP_PROGRESS_BAR=off
 
 # Copy dependency files
 COPY pyproject.toml ./

@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
   openbiodiv-agent:
@@ -17,12 +17,6 @@ services:
       - API_TIMEOUT=${API_TIMEOUT:-30}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:9999/.well-known/agent.json', timeout=5)"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
     networks:
       - openbiodiv-network
 
