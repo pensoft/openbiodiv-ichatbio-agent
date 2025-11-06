@@ -148,7 +148,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"General search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Search completed for '{params.query}'. Results include various resource types from the OpenBiodiv database."
@@ -175,7 +176,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Taxon search results for '{params.query}'{rank_info}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found taxonomic information for '{params.query}'{rank_info}. Check the artifact for detailed results including taxonomy hierarchy."
@@ -200,7 +202,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Taxon details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed taxon information for UUID {params.uuid}.")
@@ -225,7 +228,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Article search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found articles matching '{params.query}'. Results include titles, authors, DOIs, and keywords."
@@ -250,7 +254,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Article details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed article information for UUID {params.uuid}.")
@@ -275,7 +280,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Treatment search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found taxonomic treatments matching '{params.query}'."
@@ -300,7 +306,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Treatment details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed treatment information for UUID {params.uuid}.")
@@ -325,7 +332,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Specimen search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found specimen records matching '{params.query}'. Results include collection data, locality, and identification information."
@@ -350,7 +358,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Specimen details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed specimen information for UUID {params.uuid}.")
@@ -375,7 +384,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Author search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found authors matching '{params.query}'. Results include publications, ORCID, and contact information."
@@ -400,7 +410,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Author details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed author information for UUID {params.uuid}.")
@@ -425,7 +436,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Institution search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found institutions matching '{params.query}'. Results include collection information and article mentions."
@@ -450,7 +462,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Institution details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed institution information for UUID {params.uuid}.")
@@ -475,7 +488,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Sequence search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found genetic sequences matching '{params.query}'. Results include sequence mentions and collection data."
@@ -500,7 +514,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Sequence details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed sequence information for UUID {params.uuid}.")
@@ -525,7 +540,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Section search results for '{params.query}'",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         summary = f"Found article sections matching '{params.query}'. Results include section hierarchy and parent information."
@@ -550,7 +566,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Section details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         await context.reply(f"Retrieved detailed section information for UUID {params.uuid}.")
@@ -575,7 +592,8 @@ class OpenBiodivAgent(IChatBioAgent):
         await process.create_artifact(
             mimetype="application/json",
             description=f"Resource details for UUID {params.uuid}",
-            content=json.dumps(results, indent=2).encode('utf-8')
+            content=json.dumps(results, indent=2).encode('utf-8'),
+            metadata={"source": "OpenBiodiv"}
         )
 
         resource_type = results.get("type", "unknown")
